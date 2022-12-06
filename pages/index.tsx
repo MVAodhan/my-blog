@@ -43,8 +43,12 @@ export default function Home() {
           </div>
 
           <p className="mt-4 w-4/5 text-sm sm:text-xl lg:w-3/5 text-center">
-            When I'm not scheduling or uploading{' '}
-            <Link href="https://www.learnwithjason.dev/">Learn with Jason</Link>{' '}
+            When I'm not scheduling or uploading
+            <span className="px-1">
+              <Link href="https://www.learnwithjason.dev/">
+                Learn with Jason
+              </Link>
+            </span>
             episodes, I'm building things and experimenting in JavaScript and
             TypeScript. I love building with Next.JS and using serverless
             technologies the most.
