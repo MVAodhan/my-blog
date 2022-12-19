@@ -1,10 +1,26 @@
 import Head from 'next/head';
 import Image from 'next/image';
-import Nav from '@/components/Nav';
 import Link from 'next/link';
 import { SlSocialGithub, SlSocialTwitter } from 'react-icons/sl';
+import axios from 'axios';
 
-export default function Home() {
+import Post from '@/components/post';
+
+import { IDevtoPost } from '@/types/devto';
+
+export async function getServerSideProps() {
+  const res = await axios.get(
+    'https://dev.to/api/articles?username=suiteasdesign'
+  );
+  return {
+    props: {
+      posts: res.data as IDevtoPost[],
+    },
+  };
+}
+
+export default function Home({ posts }: { posts: IDevtoPost[] }) {
+  console.log(posts);
   return (
     <div className="w-screen h-screen">
       <Head>
@@ -13,46 +29,52 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="h-full w-full  flex flex-col items-center">
-        <Nav />
-        <section className="w-full h-full flex flex-col items-center">
-          <Image
-            src="/aodhan.png"
-            alt="aodhan in dress shirt in garden smiling"
-            width="200"
-            height="200"
-            className="border rounded-full mt-32 w-24 sm:w-36 md:w-44"
-            priority={true}
-          />
-          <h1 className="text-2xl mt-6">Aodhan Hamilton</h1>
-          <span className="mt-2 text-lg italic text-center">
-            Developer & Learn with Jason Digital Assistant
-          </span>
-
-          <div className="flex justify-around w-20 mt-4 ">
-            <Link href="https://twitter.com/suiteasdesign">
-              <SlSocialTwitter
-                color="teal"
-                style={{ width: '25px', height: '25px' }}
-              />
-            </Link>
-
-            <Link href="https://github.com/MVAodhan">
-              <SlSocialGithub style={{ width: '25px', height: '25px' }} />
-            </Link>
-          </div>
-
-          <p className="mt-4 w-4/5 text-sm sm:text-xl lg:w-3/5 text-center">
-            When I&#x27;m not scheduling or uploading
-            <span className="px-1">
-              <Link href="https://www.learnwithjason.dev/">
-                Learn with Jason
-              </Link>
+      <main className="h-full w-full items-center">
+        <section className="w-full h-full grid grid-cols-1 grid-rows-2 md:grid-cols-2 md:grid-rows-1 md:w-full ">
+          <div className=" w-full flex flex-col items-center justify-center">
+            <Image
+              src="/aodhan.png"
+              alt="aodhan in dress shirt in garden smiling"
+              width="200"
+              height="200"
+              className="border rounded-full w-24 sm:w-36 md:w-44"
+              priority={true}
+            />
+            <h1 className="text-2xl mt-6">Aodhan Hamilton</h1>
+            <span className="mt-2 text-lg italic text-center">
+              Developer & Digital Assistant at
+              <span className="px-1">
+                <Link href="https://www.learnwithjason.dev/">
+                  Learn with Jason
+                </Link>
+              </span>
             </span>
-            episodes, I&#x27;m building things and experimenting in JavaScript
-            and TypeScript. I love building with Next.JS and using serverless
-            technologies the most.
-          </p>
+
+            <div className="flex justify-around w-20 mt-4 ">
+              <Link href="https://twitter.com/suiteasdesign">
+                <SlSocialTwitter
+                  color="teal"
+                  style={{ width: '25px', height: '25px' }}
+                />
+              </Link>
+
+              <Link href="https://github.com/MVAodhan">
+                <SlSocialGithub style={{ width: '25px', height: '25px' }} />
+              </Link>
+            </div>
+
+            <p className="mt-4 w-4/5 text-sm sm:text-xl lg:w-3/5 text-center">
+              I&#x27;m a JavaScript and TypeScript enthusiast. Constantly
+              learning and building with my new-found knowledge, excites me. I
+              love working on technical solutions, to solve real-world problems,
+              be them for myself, or others.
+            </p>
+          </div>
+          <div className="w-full h-full  flex flex-col items-center">
+            {posts.map((post) => (
+              <Post key={post.id} post={post} />
+            ))}
+          </div>
         </section>
       </main>
     </div>
