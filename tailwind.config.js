@@ -11,6 +11,9 @@ module.exports = {
       fontFamily: {
         sans: ['var(--font-montserrat)', ...fontFamily.sans],
       },
+      scale: {
+        110: '1.1',
+      },
     },
   },
   plugins: [require('daisyui')],
